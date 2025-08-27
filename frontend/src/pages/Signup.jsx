@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerRequest, loginRequest } from "../api";
 import { useAuth } from "../auth/AuthContext";
+import Logo from "../components/Logo";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -92,39 +93,27 @@ export default function Signup() {
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 40, position: "relative", zIndex: 1 }}>
-          <div style={{
-            width: 80,
-            height: 80,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 24px auto",
-            boxShadow: "0 16px 40px rgba(251, 191, 36, 0.4)",
-            animation: "pulse 3s ease-in-out infinite"
-          }}>
-            <span style={{ fontSize: 36, fontWeight: "bold", color: "#1e293b" }}>🌟</span>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+            <Logo size="large" />
           </div>
-          <h2 style={{ 
+          <h1 style={{ 
             fontSize: 32, 
-            marginBottom: 12, 
+            fontWeight: 800, 
+            margin: "0 0 8px 0",
             background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            fontWeight: 800,
-            textAlign: "center"
+            backgroundClip: "text"
           }}>
-            Join the Journey
-          </h2>
+            Join SAMYAK
+          </h1>
           <p style={{ 
             fontSize: 16, 
             color: "#94a3b8", 
-            fontWeight: 500,
-            letterSpacing: "0.5px"
+            margin: 0,
+            fontWeight: 500
           }}>
-            Create your account and start learning
+            Create your account to start learning
           </p>
         </div>
 

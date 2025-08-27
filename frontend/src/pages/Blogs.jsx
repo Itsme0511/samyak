@@ -7,6 +7,8 @@ export default function Blogs() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [query, setQuery] = useState("");
+  const [sortBy, setSortBy] = useState("top");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [url, setUrl] = useState("");
@@ -67,11 +69,18 @@ export default function Blogs() {
   };
 
   const sortedPosts = useMemo(() => {
-    return [...posts].sort((a, b) => {
-      if ((b.score ?? 0) !== (a.score ?? 0)) return (b.score ?? 0) - (a.score ?? 0);
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-  }, [posts]);
+    let list = [...posts];
+    if (query.trim()) {
+      const q = query.trim().toLowerCase();
+      list = list.filter(p => p.title?.toLowerCase().includes(q) || p.content?.toLowerCase().includes(q) || p.authorName?.toLowerCase().includes(q));
+    }
+    if (sortBy === "new") {
+      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else {
+      list.sort((a, b) => (b.score ?? 0) - (a.score ?? 0) || (new Date(b.createdAt) - new Date(a.createdAt)));
+    }
+    return list;
+  }, [posts, query, sortBy]);
 
   return (
     <div style={{ 
@@ -93,18 +102,6 @@ export default function Blogs() {
         padding: "0 20px"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 12px 40px rgba(251, 191, 36, 0.4)"
-          }}>
-            <span style={{ fontSize: 28, fontWeight: "bold", color: "#1e293b" }}>📝</span>
-          </div>
           <div>
             <h1 style={{ 
               fontSize: 38, 
@@ -122,7 +119,39 @@ export default function Blogs() {
             </p>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 12 }}>
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <div className="card" style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px" }}>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search posts..."
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#e5e5e5",
+                outline: "none",
+                width: 180,
+                fontSize: 14
+              }}
+              aria-label="Search posts"
+            />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                color: "#e5e5e5",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: 10,
+                padding: "6px 8px",
+                fontSize: 13
+              }}
+              aria-label="Sort posts"
+            >
+              <option value="top">Top</option>
+              <option value="new">New</option>
+            </select>
+          </div>
           <button
             onClick={() => setShowForm((v) => !v)}
             style={{
@@ -139,7 +168,7 @@ export default function Blogs() {
             {showForm ? "Close" : "✍️ Write a Blog"}
           </button>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/app")}
             style={{
               padding: "12px 20px",
               borderRadius: 14,
@@ -158,7 +187,7 @@ export default function Blogs() {
 
       {/* Add form (hidden by default) */}
       {showForm && (
-        <div style={{ maxWidth: 900, margin: "0 auto 24px auto", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 16, padding: 24 }}>
+        <div className="card" style={{ maxWidth: 900, margin: "0 auto 24px auto", padding: 24 }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
             <input
               value={title}
@@ -167,7 +196,7 @@ export default function Blogs() {
               disabled={busy}
               style={{
                 padding: "12px 14px",
-                borderRadius: 10,
+                borderRadius: 12,
                 border: "1px solid rgba(255,255,255,0.2)",
                 background: "rgba(15,23,42,0.6)",
                 color: "#e5e5e5",
@@ -181,7 +210,7 @@ export default function Blogs() {
               disabled={busy}
               style={{
                 padding: "12px 14px",
-                borderRadius: 10,
+                borderRadius: 12,
                 border: "1px solid rgba(255,255,255,0.2)",
                 background: "rgba(15,23,42,0.6)",
                 color: "#e5e5e5",
@@ -196,7 +225,7 @@ export default function Blogs() {
               disabled={busy}
               style={{
                 padding: "12px 14px",
-                borderRadius: 10,
+                borderRadius: 12,
                 border: "1px solid rgba(255,255,255,0.2)",
                 background: "rgba(15,23,42,0.6)",
                 color: "#e5e5e5",
@@ -231,7 +260,7 @@ export default function Blogs() {
       )}
 
       {/* Posts list */}
-      <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16, paddingBottom: 40 }}>
         {loading ? (
           <div style={{
             background: "rgba(255,255,255,0.06)",
@@ -257,9 +286,7 @@ export default function Blogs() {
         ) : (
           sortedPosts.map((p) => {
             return (
-              <div key={p._id} style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.12)",
+              <div key={p._id} className="card" style={{
                 padding: 20,
                 borderRadius: 16,
                 display: "grid",

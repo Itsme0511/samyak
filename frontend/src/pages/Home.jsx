@@ -5,6 +5,7 @@ import Bird from "../components/Bird";
 import { useAuth } from "../auth/AuthContext";
 import Particles from "../components/Particles";
 
+
 export default function Home() {
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -241,7 +242,10 @@ export default function Home() {
       position: "relative", 
       minHeight: "100vh", 
       padding: "40px 20px",
-      overflow: "hidden"
+      overflow: "hidden",
+      background: "linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%)",
+      backgroundSize: "400% 400%",
+      animation: "gradientShift 18s ease infinite"
     }}>
       {/* Animated background particles */}
       <Particles count={20} />
@@ -256,38 +260,6 @@ export default function Home() {
         padding: "0 20px"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div style={{
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 12px 40px rgba(251, 191, 36, 0.4)",
-            position: "relative",
-            animation: "pulse 3s ease-in-out infinite"
-          }}>
-            <span style={{ fontSize: 28, fontWeight: "bold", color: "#1e293b" }}>🎯</span>
-            <div style={{
-              position: "absolute",
-              top: -2,
-              right: -2,
-              width: 20,
-              height: 20,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #ef4444, #dc2626)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 10,
-              color: "white",
-              fontWeight: "bold",
-              animation: "glow 2s ease-in-out infinite"
-            }}>
-              {levels.length}
-            </div>
-          </div>
           <div>
             <h1 style={{ 
               fontSize: 42, 

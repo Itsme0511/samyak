@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginRequest } from "../api";
 import { useAuth } from "../auth/AuthContext";
+import Logo from "../components/Logo";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +37,8 @@ export default function Login() {
       background: "linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%)",
       backgroundSize: "400% 400%",
       animation: "gradientShift 15s ease infinite",
-      overflow: "hidden"
+      overflow: "hidden",
+      padding: "20px"
     }}>
       {/* Animated background particles */}
       <div style={{
@@ -66,7 +69,8 @@ export default function Login() {
       </div>
 
       <form onSubmit={onSubmit} style={{ 
-        width: 420, 
+        width: "100%", 
+        maxWidth: 420, 
         background: "rgba(255, 255, 255, 0.08)",
         backdropFilter: "blur(20px)",
         padding: 48, 
@@ -91,37 +95,25 @@ export default function Login() {
 
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 40, position: "relative", zIndex: 1 }}>
-          <div style={{
-            width: 80,
-            height: 80,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 24px auto",
-            boxShadow: "0 16px 40px rgba(251, 191, 36, 0.4)",
-            animation: "pulse 3s ease-in-out infinite"
-          }}>
-            <span style={{ fontSize: 36, fontWeight: "bold", color: "#1e293b" }}>🔐</span>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+            <Logo size="large" />
           </div>
-          <h2 style={{ 
+          <h1 style={{ 
             fontSize: 32, 
-            marginBottom: 12, 
+            fontWeight: 800, 
+            margin: "0 0 8px 0",
             background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            fontWeight: 800,
-            textAlign: "center"
+            backgroundClip: "text"
           }}>
             Welcome Back
-          </h2>
+          </h1>
           <p style={{ 
             fontSize: 16, 
             color: "#94a3b8", 
-            fontWeight: 500,
-            letterSpacing: "0.5px"
+            margin: 0,
+            fontWeight: 500
           }}>
             Sign in to continue your learning journey
           </p>
@@ -192,33 +184,56 @@ export default function Login() {
           }}>
             Password
           </label>
-          <input 
-            value={form.password} 
-            onChange={(e) => setForm({ ...form, password: e.target.value })} 
-            type="password" 
-            required 
-            style={{
-              width: "100%", 
-              margin: "0 0 32px 0", 
-              padding: 16, 
-              borderRadius: 12, 
-              border: "2px solid rgba(255, 255, 255, 0.1)", 
-              background: "rgba(255, 255, 255, 0.05)", 
-              color: "#e2e8f0",
-              fontSize: 16,
-              transition: "all 0.3s ease",
-              outline: "none"
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = "#fbbf24";
-              e.target.style.background = "rgba(255, 255, 255, 0.08)";
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
-              e.target.style.background = "rgba(255, 255, 255, 0.05)";
-            }}
-            placeholder="Enter your password"
-          />
+          <div style={{ position: "relative", marginBottom: 32 }}>
+            <input 
+              value={form.password} 
+              onChange={(e) => setForm({ ...form, password: e.target.value })} 
+              type={showPassword ? "text" : "password"}
+              required 
+              style={{
+                width: "100%", 
+                padding: 16, 
+                borderRadius: 12, 
+                border: "2px solid rgba(255, 255, 255, 0.1)", 
+                background: "rgba(255, 255, 255, 0.05)", 
+                color: "#e2e8f0",
+                fontSize: 16,
+                transition: "all 0.3s ease",
+                outline: "none"
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = "#fbbf24";
+                e.target.style.background = "rgba(255, 255, 255, 0.08)";
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                e.target.style.background = "rgba(255, 255, 255, 0.05)";
+              }}
+              placeholder="Enter your password"
+              aria-label="Password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(v => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              title={showPassword ? "Hide password" : "Show password"}
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 10,
+                height: 36,
+                padding: "0 10px",
+                borderRadius: 10,
+                border: "1px solid rgba(255,255,255,0.2)",
+                background: "rgba(15,23,42,0.5)",
+                color: "#e2e8f0",
+                cursor: "pointer",
+                fontSize: 12
+              }}
+            >
+              {showPassword ? "🙈 Hide" : "👁 Show"}
+            </button>
+          </div>
 
           <button 
             disabled={loading} 
@@ -310,15 +325,3 @@ export default function Login() {
     </div>
   );
 }
-
-// Add spin animation to CSS
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`;
-document.head.appendChild(style);
-
-

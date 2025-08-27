@@ -50,8 +50,8 @@ export default function Preloader({ message = "Loading..." }) {
           }} />
           <div style={{
             position: "absolute",
-            left: "50%",
-            top: "50%",
+            left: "25%",
+            top: "25%",
             transform: "translate(-50%, -50%)",
             width: 72,
             height: 72,

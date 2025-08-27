@@ -26,7 +26,7 @@ function Particles({ count = 20, colorA = "rgba(251, 191, 36, 0.3)", colorB = "r
             position: "absolute",
             width: p.size,
             height: p.size,
-            background: p.color,
+            background: `radial-gradient(circle at 30% 30%, ${p.color}, transparent 70%)`,
             borderRadius: "50%",
             left: `${p.left}%`,
             top: `${p.top}%`,

@@ -9,6 +9,7 @@ const Signup = lazy(() => import("./pages/Signup"));
 const Quiz = lazy(() => import("./pages/Quiz"));
 const Modules = lazy(() => import("./pages/Modules"));
 const Blogs = lazy(() => import("./pages/Blogs"));
+const Landing = lazy(() => import("./pages/Landing"));
 
 function App() {
   return (
@@ -16,10 +17,13 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={<Preloader message="Loading game..." /> }>
           <Routes>
+            {/* Public landing as root */}
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            {/* Protected app home */}
             <Route
-              path="/"
+              path="/app"
               element={
                 <Protected>
                   <Home />

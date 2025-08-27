@@ -1,4 +1,4 @@
-# wamil
+# Samyak = Right/Correct.
 
 #User Workflow:
 1. A user logs in → a little animation that take user to
