@@ -143,7 +143,7 @@ export default function Signup() {
             fontWeight: 600,
             color: "#e2e8f0"
           }}>
-            Username
+            Enter full name
           </label>
           <input 
             value={form.username} 
@@ -169,7 +169,7 @@ export default function Signup() {
               e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
               e.target.style.background = "rgba(255, 255, 255, 0.05)";
             }}
-            placeholder="Choose a username"
+            placeholder="Enter your name"
           />
 
           <label style={{ 

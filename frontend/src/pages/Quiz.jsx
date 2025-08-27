@@ -83,7 +83,7 @@ export default function Quiz() {
         token: localStorage.getItem("token") 
       });
       
-      navigate("/", { replace: true });
+      navigate("/app", { replace: true });
     } catch (err) {
       console.error("Failed to update level:", err);
       navigate("/", { replace: true });
